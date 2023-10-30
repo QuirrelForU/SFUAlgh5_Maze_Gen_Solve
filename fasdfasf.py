@@ -14,18 +14,10 @@ a = [[0] * cols_fixed for _ in range(rows_fixed)]
 a = [[1 if i in (0, rows_fixed - 1) or j in (0, cols_fixed - 1) else 0 for j in range(cols_fixed)] for i in
      range(rows_fixed)]
 
-print('default')
-for row in a:
-    print(row)
-
 # input indecies for 1 rows
 for j in range(1, cols_fixed, 2):
     a[1][j] = index
     index += 1
-
-print('first_indecies')
-for row in a:
-    print(row)
 
 for i in range(1, rows_fixed, 2):
     for j in range(1, cols_fixed - 2, 2):
@@ -60,59 +52,41 @@ for i in range(1, cols_fixed - 2, 2):
         a[rows_fixed - 2][i + 1] = 0
         a[rows_fixed - 2][i + 2] == a[rows_fixed - 2][i]
 
-print('zalupa')
-for row in a:
-    print(row)
-
 for i in range(1, rows_fixed, 2):
     for j in range(1, cols_fixed, 2):
         a[i][j] = 0
 
-print('zalupa')
-for row in a:
-    print(row)
 
-print('zalupa2')
-#5x5
-'''
-,---------------------------------------.---------.    
-|                                       |         |    
-|    ,-----------------------------.    |    .    |    
-|    |                             |    |    |    |    
-|    |    ,-------------------.    |    |    |    |    
-|    |    |                   |    |    |    |    |    
-|    |    `----     ,----     |    |    |    |    |    
-|    |              | X       |    |    |    |    |    
-|    |    ,---------"---------:    |    `----'    |    
-|    |    |                   |    |              |    
-|    `----:    ,---------.    |    `---------.    |    
-|         |    |         |    |              |    |    
-|    .    |    |    .    |    |     ---------'    |    
-|    |    |    |    |    |    |                   |    
-:----'    |    |    |    |    |    ,--------------:    
-|         |    |    |    |    |    |              |    
-|    .    |    `----'    |    |    |     ----.    |    
-|    |    |              |    |    |         |    |    
-|    `----"---------     |    |    `---------'    |    
-|                        |    |                   |    
-`------------------------'    `-------------------'
-'''
-for i in range(cols):
-    print('___',end='')
-print()
-for i in range(1, rows_fixed, 2):
-    print('|',end='')
-    for j in range(1,cols_fixed,2):
-        if a[i][j+1] == 1 and a[i+1][j]:
-            print('__|', end='')
-        elif a[i][j+1] == 1:
-            print('  |',end='')
-        elif a[i+1][j] == 1:
-            print('___',end='')
-        elif i == rows_fixed-2 and a[i][j+1] == 0:
-            print('___',end='')
-        else:
-            print('   ',end='')
+def maze_print(maze, cols_fixed, rows_fixed):
+    for i in range(cols):
+        print('___', end='')
     print()
+    for i in range(1, rows_fixed, 2):
+        print('|', end='')
+        for j in range(1, cols_fixed, 2):
+            if maze[i][j + 1] == 1 and maze[i + 1][j]:
+                print('__|', end='')
+            elif maze[i][j + 1] == 1:
+                print('  |', end='')
+            elif maze[i + 1][j] == 1:
+                print('___', end='')
+            elif i == rows_fixed - 2 and maze[i][j + 1] == 0:
+                print('___', end='')
+            else:
+                print('   ', end='')
+        print()
 
+print('generated_maze')
+maze_print(a, cols_fixed, rows_fixed)
+# solve maze
 
+created_maze = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+                [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1], [1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
+                [1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1],
+                [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+                [1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1], [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+                [1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1], [1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1],
+                [1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
+print('\nstable_maze ')
+maze_print(created_maze,cols_fixed,rows_fixed)
