@@ -76,6 +76,7 @@ def maze_print(maze, cols_fixed, rows_fixed):
                 print('   ', end='')
         print()
 
+
 print('generated_maze')
 maze_print(a, cols_fixed, rows_fixed)
 # solve maze
@@ -88,5 +89,19 @@ created_maze = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 0, 0, 0, 1, 0
                 [1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1], [1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1],
                 [1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
+print('maze in array')
+for row in created_maze:
+    print(row)
+
 print('\nstable_maze ')
-maze_print(created_maze,cols_fixed,rows_fixed)
+maze_print(created_maze, cols_fixed, rows_fixed)
+
+# start and end in fixed format
+start = (1, 1)
+end = (13, 13)
+
+
+
+while True:
+
+    pass
