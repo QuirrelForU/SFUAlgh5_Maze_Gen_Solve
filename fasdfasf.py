@@ -107,6 +107,36 @@ def maze_print(maze, cols_fixed, rows_fixed):
         print()
 
 
+def maze_print_solved(maze, cols_fixed, rows_fixed, path):
+    for i in range(cols):
+        print('___', end='')
+    print()
+    for i in range(1, rows_fixed, 2):
+        print('|', end='')
+        for j in range(1, cols_fixed, 2):
+            if maze[i][j + 1] == 1 and maze[i + 1][j] and [i, j] in path:
+                print('_~|', end='')
+            elif maze[i][j + 1] == 1 and [i, j] in path:
+                print(' ~|', end='')
+            elif maze[i + 1][j] == 1 and [i, j] in path:
+                print('_~_', end='')
+            elif i == rows_fixed - 2 and maze[i][j + 1] == 0 and [i, j] in path:
+                print('_~_', end='')
+            elif maze[i][j + 1] == 1 and maze[i + 1][j]:
+                print('__|', end='')
+            elif maze[i][j + 1] == 1:
+                print('  |', end='')
+            elif maze[i + 1][j] == 1:
+                print('___', end='')
+            elif i == rows_fixed - 2 and maze[i][j + 1] == 0:
+                print('___', end='')
+            elif [i, j] in path:
+                print(' ~ ', end='')
+            else:
+                print('   ', end='')
+        print()
+
+
 print('generated_maze')
 maze_print(a, cols_fixed, rows_fixed)
 
@@ -128,6 +158,7 @@ created_maze = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 
 print('\nstable_maze ')
 maze_print(created_maze, cols_fixed, rows_fixed)
+print('\n\n\n')
 
 # start and end in fixed format rows, cols
 start = (1, 1)
@@ -192,12 +223,15 @@ def a_way_out(maze, start_pos, end_pos, right_path):
 
 
 path = []
+path.append(list(start))
 solving_maze[start[0]][start[1]] = [shortest_distance(start, end), 0]
 a_way_out(solving_maze, start, end, path)
-
-for row in solving_maze:
-    print(row)
-
-print('\n\n\n')
-print(path)
-
+path.append(list(end))
+#
+# for row in solving_maze:
+#     print(row)
+#
+# print('\n\n\n')
+# print(path)
+# print('\n\n\n')
+maze_print_solved(created_maze, cols_fixed, rows_fixed, path)
