@@ -170,6 +170,26 @@ class Maze:
         a_way_out(solving_maze, start, end)
         self.path = solving_maze[end[0]][end[1]][2]
 
+    def import_maze_from_file(self):
+        # file with 2-dimens array to maze (just import via fixedrows and fixedcols)
+        pass
+
+    def export_maze_to_file(self):
+        # 2-dimens array to file with data
+        pass
+
+    def create_maze_png(self):
+        # tekushee sostoyanie labirinta -> png
+        pass
+
+    def create_gif_maze_gen(self):
+        #  nujna istoriya genera + create png
+        pass
+
+    def create_gif_maze_solve(self):
+        # nujna istoriya solvera + create png
+        pass
+
 
 # Example usage:
 rows = 7
