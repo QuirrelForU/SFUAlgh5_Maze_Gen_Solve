@@ -1,7 +1,15 @@
 import copy
 import random
 
-# не проверяют индексы справа
+'''
+добавить ввод | вывод лабиринта в файл
+добавить вывод png лабиринта
+добавить ввод лабиринта из jpg | png 
+написать тесты к классу maze
+генерация гифки для решения и построения лабиринта
+добавить CLI интерфейс
+
+'''
 rows = 7
 cols = 7
 
@@ -172,21 +180,6 @@ def a_way_out(maze, start_pos, end_pos):
         a_way_out(maze, new_start, end_pos)
 
 
-# created_maze = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-#                 [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
-#                 [1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-#                 [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-#                 [1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1],
-#                 [1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1],
-#                 [1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-#                 [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-#                 [1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-#                 [1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1],
-#                 [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1],
-#                 [1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-#                 [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1],
-#                 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-#                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
 created_maze = a
 print('\ngenerated_maze ')
 maze_print(created_maze, cols_fixed, rows_fixed)
@@ -195,11 +188,15 @@ print('\n')
 # start and end in fixed format rows, cols
 start = (1, 1)
 end = (13, 13)
+print(created_maze)
+for row in created_maze:
+    print(row)
 
 solving_maze = copy.copy(created_maze)
 for i in range(1, rows_fixed, 2):
     for j in range(1, cols_fixed, 2):
         solving_maze[i][j] = [0, 0, 0]
+
 
 solving_maze[start[0]][start[1]] = [shortest_distance(start, end), 0, [list(start)]]
 a_way_out(solving_maze, start, end)
