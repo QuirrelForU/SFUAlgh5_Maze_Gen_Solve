@@ -70,7 +70,35 @@ def image_to_maze(image_path, maze_size=(4, 4), wall_color=(0, 0, 0), path_color
         maze.append(row)
 
     return maze
+
+
+def read_maze_from_file(file_path):
+    try:
+        with open(file_path, "r") as file:
+            maze = []
+            for line in file:
+                row = [int(cell) for cell in line.strip()]
+                maze.append(row)
+            return maze
+    except FileNotFoundError:
+        print(f"Файл '{file_path}' не найден.")
+    except Exception as e:
+        print(f"Произошла ошибка при чтении файла: {str(e)}")
+
+
+def write_maze_to_file(maze, file_path):
+    try:
+        with open(file_path, "w") as file:
+            for row in maze:
+                line = "".join(map(str, row)) + "\n"
+                file.write(line)
+    except Exception as e:
+        print(f"Произошла ошибка при записи в файл: {str(e)}")
+
+
 # Пример лабиринта (0 - стена, 1 - путь)
+
+
 maze = [
     [0, 0, 0, 0, 0],
     [0, 1, 1, 1, 0],
@@ -111,3 +139,5 @@ maze = image_to_maze("maze.png", maze_size=(5, 5))
 # Выводим полученный двумерный массив
 for row in maze:
     print(row)
+
+write_maze_to_file(maze, "maze.txt")
