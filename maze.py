@@ -142,7 +142,7 @@ class Maze:
             if self.maze[self.rows_fixed - 2][i] != self.maze[self.rows_fixed - 2][i + 2]:
                 self.maze[self.rows_fixed - 2][i + 1] = 0
                 temp = copy.copy(self.maze[self.rows_fixed - 2][i + 2])
-                for z in range(1, self.cols_fixed - 2, 2):
+                for z in range(1, self.cols_fixed, 2):
                     if self.maze[self.rows_fixed - 2][z] == temp:
                         self.maze[self.rows_fixed - 2][z] = self.maze[self.rows_fixed - 2][i]
         self.generation_states.append(copy.deepcopy(self.maze))
