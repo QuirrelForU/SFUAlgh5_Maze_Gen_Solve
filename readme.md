@@ -4,6 +4,8 @@ A command-line interface (CLI) module for interacting with the Maze class, allow
 algorithm, solve them via Best first search algorithm,
 import from files/images (png or txt), export to files/images, and create GIFs for maze generation and solving.
 
+![Gen_gif](/gif/gen.gif)
+![Gen_gif](/gif/solve.gif)
 ## Examples of Usage:
 
 ### Example 1:
