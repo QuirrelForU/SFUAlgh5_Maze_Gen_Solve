@@ -7,6 +7,38 @@ from typing import List, Union, Tuple
 from PIL import Image, ImageDraw
 
 
+def shortest_distance(start_pos: Tuple[int, int], end_pos: Tuple[int, int]) -> int:
+    """
+    Calculate the shortest distance between two positions.
+
+    Args:
+        start_pos (Tuple[int, int]): The starting position as a (row, column) tuple.
+        end_pos (Tuple[int, int]): The ending position as a (row, column) tuple.
+
+    Returns:
+        int: The shortest distance between the positions.
+    """
+    return (abs(start_pos[0] - end_pos[0]) + abs(start_pos[1] - end_pos[1])) // 2
+
+
+def find_element_in_matrix(matrix: List[List[int]], target: int) -> Union[List[int], None]:
+    """
+    Find the target value in a 2D matrix.
+
+    Args:
+        matrix (List[List[int]]): The 2D matrix to search.
+        target (int): The target value to find.
+
+    Returns:
+        Union[List[int], None]: The position of the target value as a (row, column) tuple or None if not found.
+    """
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            if matrix[i][j] == target:
+                return [i, j]
+    return None
+
+
 class Maze:
     """
        A class for generating, solving, and manipulating mazes.
@@ -27,7 +59,7 @@ class Maze:
 
     def __init__(self, rows: int = 1, cols: int = 1) -> None:
         """
-        Initialize the Maze object with the specified number of rows and columns.
+        Initialize the Maze object.
 
         Args:
             rows (int): The number of rows in the maze.
@@ -62,9 +94,9 @@ class Maze:
             for i in range(self.rows_fixed)]
         self.generation_states.append(copy.deepcopy(self.maze))
         # make support walls
-        for i in range(2, maze.rows_fixed, 2):
-            for j in range(0, maze.cols_fixed, 2):
-                maze.maze[i][j] = 1
+        for i in range(2, self.rows_fixed, 2):
+            for j in range(0, self.cols_fixed, 2):
+                self.maze[i][j] = 1
         self.generation_states.append(copy.deepcopy(self.maze))
         # first row indecies
         for j in range(1, self.cols_fixed, 2):
@@ -108,9 +140,9 @@ class Maze:
             if self.maze[self.rows_fixed - 2][i] != self.maze[self.rows_fixed - 2][i + 2]:
                 self.maze[self.rows_fixed - 2][i + 1] = 0
                 temp = copy.copy(self.maze[self.rows_fixed - 2][i + 2])
-                for z in range(i + 2, self.cols_fixed - 2, 2):
+                for z in range(1, self.cols_fixed - 2, 2):
                     if self.maze[self.rows_fixed - 2][z] == temp:
-                        self.maze[self.rows_fixed - 2][z] == self.maze[self.rows_fixed - 2][i]
+                        self.maze[self.rows_fixed - 2][z] = self.maze[self.rows_fixed - 2][i]
         self.generation_states.append(copy.deepcopy(self.maze))
         # delete trash
         for i in range(1, self.rows_fixed, 2):
@@ -178,36 +210,6 @@ class Maze:
                     print('   ', end='')
             print()
 
-    def shortest_distance(self, start_pos: Tuple[int, int], end_pos: Tuple[int, int]) -> int:
-        """
-        Calculate the shortest distance between two positions in the maze.
-
-        Args:
-            start_pos (Tuple[int, int]): The starting position as a (row, column) tuple.
-            end_pos (Tuple[int, int]): The ending position as a (row, column) tuple.
-
-        Returns:
-            int: The shortest distance between the positions.
-        """
-        return (abs(start_pos[0] - end_pos[0]) + abs(start_pos[1] - end_pos[1])) // 2
-
-    def find_element_in_matrix(self, matrix: List[List[int]], target: int) -> Union[List[int], None]:
-        """
-        Find the target value in a 2D matrix.
-
-        Args:
-            matrix (List[List[int]]): The 2D matrix to search.
-            target (int): The target value to find.
-
-        Returns:
-            Union[List[int], None]: The position of the target value as a (row, column) tuple or None if not found.
-        """
-        for i in range(len(matrix)):
-            for j in range(len(matrix[i])):
-                if matrix[i][j] == target:
-                    return [i, j]
-        return None
-
     def solve_maze(self, start: Tuple[int, int], end: Tuple[int, int]) -> None:
         """
         Solve the maze from a given start position to an end position.
@@ -219,13 +221,21 @@ class Maze:
         Returns:
             None
         """
+        if not (all(x % 2 != 0 for x in start) and all(x % 2 != 0 for x in end)):
+            return
+        if start == end:
+            return
+        max_value = max(self.rows_fixed, self.cols_fixed)
+        if not (1 <= start[0] <= max_value and 1 <= start[1] <= max_value and 1 <= end[
+            0] <= max_value and 1 <= end[1] <= max_value):
+            return
 
         def a_way_out(maze: List[List[List[int]]], start_pos: Tuple[int, int], end_pos: Tuple[int, int]) -> None:
             """
             Recursive function to find a way out in the maze using backtracking.
 
             Args:
-                maze (List[List[List[int]]): A 3D list representing the maze layout with state information.
+                maze (List[List[List[int]]): List representing the maze layout.
                 start_pos (Tuple[int, int]): The current position as a (row, column) tuple.
                 end_pos (Tuple[int, int]): The destination position as a (row, column) tuple.
 
@@ -241,8 +251,8 @@ class Maze:
                 Attempt to move in a specific direction from the current position and update the maze state.
 
                 Args:
-                    maze (List[List[List[int]]): A 3D list representing the maze layout with state information.
-                    direction (Tuple[int, int]): The movement direction as a (row, column) tuple.
+                    maze (List[List[List[int]]): List representing the maze layout.
+                    direction (Tuple[int, int]): The movement direction.
                     distance (int): The distance to move in that direction.
 
                 Returns:
@@ -251,7 +261,7 @@ class Maze:
                 new_pos_wall = (start_pos[0] + direction[0], start_pos[1] + direction[1])
                 new_pos = (start_pos[0] + direction[0] * distance, start_pos[1] + direction[1] * distance)
                 if maze[new_pos_wall[0]][new_pos_wall[1]] != 1 and maze[new_pos[0]][new_pos[1]][1] != 1:
-                    maze[new_pos[0]][new_pos[1]] = [self.shortest_distance(new_pos, end_pos), 0,
+                    maze[new_pos[0]][new_pos[1]] = [shortest_distance(new_pos, end_pos), 0,
                                                     maze[start_pos[0]][start_pos[1]][2] + [
                                                         [new_pos[0], new_pos[1]]]]
                     ways.append(maze[new_pos[0]][new_pos[1]])
@@ -263,10 +273,9 @@ class Maze:
             shortest_ways = list(filter(lambda x: not x[1], ways))
             shortest_ways.sort(key=lambda x: x[0])
             if any(sublist[:2] == [0, 0] for sublist in shortest_ways):
-
                 return
-            elif shortest_ways:
-                new_start = self.find_element_in_matrix(maze, shortest_ways[0])
+            if shortest_ways:
+                new_start = find_element_in_matrix(maze, shortest_ways[0])
                 a_way_out(maze, new_start, end_pos)
             else:
                 new_start = [1, 1]
@@ -281,7 +290,7 @@ class Maze:
         for i in range(1, self.rows_fixed, 2):
             for j in range(1, self.cols_fixed, 2):
                 solving_maze[i][j] = [0, 0, 0]
-        solving_maze[start[0]][start[1]] = [self.shortest_distance(start, end), 0, [list(start)]]
+        solving_maze[start[0]][start[1]] = [shortest_distance(start, end), 0, [list(start)]]
         self.solving_states.append(solving_maze[start[0]][start[1]][2])
         a_way_out(solving_maze, start, end)
         self.solving_states.append(solving_maze[end[0]][end[1]][2])
@@ -300,13 +309,12 @@ class Maze:
             None
         """
         try:
-            with open(filename, 'r') as file:
+            with open(filename, 'r', encoding='utf-8') as file:
                 maze_data = [list(map(int, line.strip())) for line in file.readlines()]
+                self.maze = maze_data
+                self.rows_fixed = len(maze_data)
+                self.cols_fixed = len(maze_data[0])
 
-                if len(maze_data) == self.rows_fixed and all(len(row) == self.cols_fixed for row in maze_data):
-                    self.maze = maze_data
-                else:
-                    print("Invalid maze dimensions in the file.")
         except FileNotFoundError:
             print(f"File {filename} not found.")
 
@@ -354,13 +362,13 @@ class Maze:
         Returns:
             None
         """
-        with open(filename, 'w') as file:
+        with open(filename, 'w', encoding='utf-8') as file:
             for row in self.maze:
                 file.write(''.join(map(str, row)) + '\n')
 
     def create_maze_png(self, maze: List[List[int]], solve_path: List[List[int]] = None) -> Image.Image:
         """
-        Create an image representation of the maze with optional solution path.
+        Create an image of a labyrinth with a solution path if there is one.
 
         Args:
             maze (List[List[int]]): The maze layout.
@@ -369,7 +377,7 @@ class Maze:
         Returns:
             Image.Image: A PIL image representing the maze.
         """
-        cell_size = 20  # Adjust cell size as needed
+        cell_size = 20  # Adjust cell size as needed, you should change the for algorithm in import also
         wall_color = (0, 0, 0)  # Color for walls
         path_color = (255, 255, 255)  # Color for paths
         find_color = (255, 0, 0)  # Color for searching algorithm
@@ -389,7 +397,6 @@ class Maze:
                 draw.rectangle([(position[1] * cell_size, position[0] * cell_size),
                                 ((position[1] + 1) * cell_size, (position[0] + 1) * cell_size)], fill=find_color)
 
-        # img.save(filename, 'PNG')
         return img
 
     def create_gif_maze_gen(self, filename: str, duration: int = 1000, loop: int = 0) -> None:
@@ -398,7 +405,7 @@ class Maze:
 
         Args:
             filename (str): The name of the GIF file to save.
-            duration (int): The duration (in milliseconds) of each frame (default: 1000).
+            duration (int): The duration of each frame (default: 1000).
             loop (int): Number of times the GIF should loop (0 for infinite loop, default: 0).
 
         Returns:
@@ -425,7 +432,7 @@ class Maze:
 
         Args:
             filename (str): The name of the GIF file to save.
-            duration (int): The duration (in milliseconds) of each frame (default: 1000).
+            duration (int): The duration  of each frame (default: 1000).
             loop (int): Number of times the GIF should loop (0 for infinite loop, default: 0).
 
         Returns:
@@ -446,25 +453,3 @@ class Maze:
                 duration=duration, loop=loop)
         else:
             print('Cannot create gif')
-
-
-# Example usage:
-maze = Maze(7, 7)
-# maze.import_maze_from_image('maze.png')
-maze.generate_maze()
-# maze.import_maze_from_file('zalupa.txt')
-# print('\nGenerated Maze:')
-maze.print_maze()
-start = (1, 1)
-end = (13, 13)
-print('\nSolved Maze:')
-maze.solve_maze(start, end)
-maze.print_solved_maze()
-maze.export_maze_to_file('maze.txt')
-maze.create_maze_png(maze.maze).save('maze.png', 'PNG')
-maze.create_gif_maze_gen('maze.gif')
-maze.create_gif_maze_solve('maze_solve.gif', duration=500)
-'''
-КОМЕНТЫ
-CLI
-'''
