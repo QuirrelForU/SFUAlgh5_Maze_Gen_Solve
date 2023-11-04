@@ -1,5 +1,7 @@
 """
 Module for Maze class implementation.
+Maze generation via Eller's algorithm.
+Maze solve via Best first search algorithm
 """
 import copy
 import random
