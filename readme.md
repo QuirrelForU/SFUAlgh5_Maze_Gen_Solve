@@ -1,6 +1,7 @@
 # Maze Generator and Solver
 
-A command-line interface (CLI) module for interacting with the Maze class, allowing you to generate mazes, solve them,
+A command-line interface (CLI) module for interacting with the Maze class, allowing you to generate mazes via Eller's
+algorithm, solve them via Best first search algorithm,
 import from files/images (png or txt), export to files/images, and create GIFs for maze generation and solving.
 
 ## Examples of Usage:
@@ -25,6 +26,7 @@ python main.py --size 8,8 --solve_indecies 1,1,15,15 --filename maze_test_1 --co
 
 Generate a random maze with a size of 4x4 and attempt to find a path (which is not possible), and perform various
 outputs.
+
 ```
 python main.py --size 4,4 --solve_indecies 1,1,1,1 --filename maze_test_2 --console_output --text_output --image_output --gif_output
 ```
@@ -40,9 +42,11 @@ python main.py --size 4,4 --solve_indecies 1,1,1,1 --filename maze_test_2 --cons
 
 Import a maze from an image file (`maze.png`), find a path from the upper left to the lower right corner, and perform
 various outputs.
+
 ```
 python main.py --import_file maze.png --solve_indecies 1,1,13,13 --filename maze_test_3 --console_output --text_output --image_output --gif_output
 ```
+
 - Requires maze.png data file.
 - Imports a maze from the image file.
 - Finds a path from the upper left to the lower right corner.
@@ -55,9 +59,11 @@ python main.py --import_file maze.png --solve_indecies 1,1,13,13 --filename maze
 
 Import a maze from a text file (`maze.txt`), attempt to find a path (which is not possible), and perform various
 outputs.
+
 ```
 python main.py --import_file maze.txt --solve_indecies 41,1,53,13 --filename maze_test_4 --console_output --image_output --gif_output
 ```
+
 - Requires maze.txt data file.
 - Imports a maze from a text file.
 - Tries to find a path but fails due to the provided indices.

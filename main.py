@@ -1,6 +1,6 @@
 """
 CLI module for interaction with Maze class.
-maze generation, maze solving, maze import from file|image(png), maze export to file|image,
+Maze generation, maze solving, maze import from file|image(png), maze export to file|image,
 creating gif of maze generation and gif of maze solving
 """
 import argparse
