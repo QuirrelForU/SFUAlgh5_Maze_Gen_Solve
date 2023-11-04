@@ -64,5 +64,3 @@ python main.py --import_file maze.txt --solve_indecies 41,1,53,13 --filename maz
 - Prints only the maze in the console.
 - Saves the maze in an image file named `maze_test_4.png`.
 - No GIFs are created.
-
-Feel free to use these examples to guide you through the usage of the Maze Generator and Solver CLI module.
